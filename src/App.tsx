@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState, useEffect } from "react";
+
+import hole from "./assets/hole.png";
+import mole from "./assets/mole.png";
 
 function App() {
+  const [moles, setMoles] = useState(Array(9).fill(false));
+  const [score, setScore] = useState(0);
+  // score
+  // whack the mole + 1
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * moles.length);
+      const newMoles = [...moles];
+      newMoles[randomIndex] = true;
+      setMoles(newMoles);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="score">Score: {score}</div>
+      <div className="grid">
+        {moles.map((isMole) => (
+          <img src={isMole ? mole : hole} alt="hole" />
+        ))}
+      </div>
+    </>
   );
 }
 
