@@ -5,30 +5,49 @@ import hole from "./assets/hole.png";
 import mole from "./assets/mole.png";
 
 function App() {
-  const [moles, setMoles] = useState(Array(9).fill(false));
+  const [moles, setMoles] = useState<boolean[]>(new Array(9).fill(false));
   const [score, setScore] = useState(0);
-  // score
-  // whack the mole + 1
+
+  function whackMole(index: number) {
+    if (!moles[index]) return;
+    moleVisibility(index, false);
+    setScore(score + 1);
+  }
+
+  function moleVisibility(index: number, isVisible: boolean) {
+    setMoles((currentMoles) => {
+      const newMoles = [...currentMoles];
+      newMoles[index] = isVisible;
+      return newMoles;
+    });
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
       const randomIndex = Math.floor(Math.random() * moles.length);
-      const newMoles = [...moles];
-      newMoles[randomIndex] = true;
-      setMoles(newMoles);
+      moleVisibility(randomIndex, true);
+
+      setTimeout(() => {
+        moleVisibility(randomIndex, false);
+      }, 800);
     }, 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [moles]);
 
   return (
     <>
-      <div className="score">Score: {score}</div>
+      <div className="score">Score:{score}</div>
       <div className="grid">
-        {moles.map((isMole) => (
-          <img src={isMole ? mole : hole} alt="hole" />
+        {moles.map((isMole, index) => (
+          <img
+            key={index}
+            src={isMole ? mole : hole}
+            onClick={() => whackMole(index)}
+            alt="hole"
+          />
         ))}
       </div>
     </>
