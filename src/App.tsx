@@ -39,16 +39,20 @@ function App() {
 
   return (
     <>
-      <div className="score">Score:{score}</div>
-      <div className="grid">
-        {moles.map((isMole, index) => (
-          <img
-            key={index}
-            src={isMole ? mole : hole}
-            onClick={() => whackMole(index)}
-            alt="hole"
-          />
-        ))}
+      <div className="block"></div>
+      <div className="body-container">
+        <div className="whack">Whack-A-Mole</div>
+        <div className="score">Score:{score}</div>
+        <div className="grid">
+          {moles.map((isMole, index) => (
+            <img
+              key={index}
+              src={isMole ? mole : hole}
+              onClick={() => whackMole(index)}
+              alt="hole"
+            />
+          ))}
+        </div>
       </div>
     </>
   );
